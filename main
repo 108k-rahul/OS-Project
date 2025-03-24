@@ -1,0 +1,102 @@
+Project Report: Intelligent CPU Scheduler Simulator
+1. Project Overview
+The Intelligent CPU Scheduler Simulator is designed to simulate various CPU scheduling algorithms, with a primary focus on First Come First Serve (FCFS) in this version. The tool enables users to input processes with arrival times and burst times, then visualizes their execution order using a Gantt Chart. It also computes essential performance metrics such as waiting time, turnaround time, and CPU utilization to help users understand how scheduling algorithms work in operating systems.
+This project aims to provide an educational tool for students, researchers, and developers to analyze CPU scheduling methods. By offering a graphical representation of scheduling, the simulator enhances conceptual understanding and performance analysis.
+2. Module-Wise Breakdown
+•	User Input Module:
+o	Accepts process details such as process ID, arrival time, and burst time.
+o	Allows users to input multiple processes dynamically.
+o	Validates user input to prevent errors such as negative burst times.
+•	Scheduling Algorithm Module:
+o	Implements the FCFS scheduling algorithm, which executes processes in order of arrival.
+o	Computes waiting time, turnaround time, and completion time.
+o	Ensures proper handling of CPU idle time if no process is available for execution.
+•	Visualization Module:
+o	Generates a Gantt Chart using Matplotlib to graphically represent process execution.
+o	Displays execution order, start and finish times, and process transitions.
+o	Provides statistical insights into CPU utilization and idle time.
+3. Functionalities
+•	Accepts dynamic user input for process scheduling.
+•	Implements FCFS Scheduling Algorithm.
+•	Computes essential scheduling metrics:
+o	Waiting Time: Time a process spends waiting before execution.
+o	Turnaround Time: Total time taken from arrival to completion.
+o	Completion Time: When the process finishes execution.
+•	Visualizes execution with a Gantt Chart.
+•	Provides performance insights, such as CPU efficiency.
+4. Technology Used
+•	Programming Languages: Python
+•	Libraries and Tools:
+o	matplotlib (for Gantt chart visualization)
+o	collections (for process queue handling)
+•	Other Tools:
+o	GitHub (for version control and collaboration)
+o	Jupyter Notebook (for testing and analysis)
+5. Flow Diagram
+(Insert flow diagram showing input → scheduling algorithm → output visualization.)
+6. Revision Tracking on GitHub
+•	Repository Name: CPU-Scheduler-Simulator
+•	GitHub Link: (Insert GitHub repository link here)
+7. Conclusion and Future Scope
+This project successfully implements the FCFS scheduling algorithm, providing a hands-on approach to understanding scheduling policies. By visualizing process execution with Gantt charts and calculating performance metrics, the simulator serves as an effective educational tool.
+Future Enhancements:
+•	Implement additional scheduling algorithms:
+o	Shortest Job First (SJF)
+o	Round Robin (RR)
+o	Priority Scheduling
+•	Support Preemptive and Non-Preemptive Scheduling.
+•	Develop a Graphical User Interface (GUI) for a more user-friendly experience.
+•	Incorporate real-time process execution visualization.
+•	Optimize scheduling with AI-based decision-making.
+8. References
+(List any textbooks, research papers, or websites used for guidance.)
+________________________________________
+Appendix
+A. AI-Generated Project Elaboration/Breakdown Report
+(Paste AI-generated breakdown of the project here.)
+B. Problem Statement
+Title: Intelligent CPU Scheduler Simulator Description: Develop a simulator for CPU scheduling algorithms, focusing on First Come First Serve (FCFS). The simulator should allow users to input processes with arrival times and burst times, compute scheduling metrics, and visualize execution using a Gantt Chart.
+C. Solution/Code
+import matplotlib.pyplot as plt
+class Process:
+    def __init__(self, pid, arrival, burst):
+        self.pid = pid
+        self.arrival = arrival
+        self.burst = burst
+        self.waiting_time = 0
+        self.turnaround_time = 0
+        self.completion_time = 0
+# FCFS Scheduling Function
+def fcfs_scheduling(processes):
+    processes.sort(key=lambda x: x.arrival)  # Sort by arrival time
+    current_time = 0
+    gantt_chart = []
+    for process in processes:
+        if current_time < process.arrival:
+            current_time = process.arrival
+        process.waiting_time = current_time - process.arrival
+        process.turnaround_time = process.waiting_time + process.burst
+        process.completion_time = current_time + process.burst
+        gantt_chart.append((process.pid, current_time, current_time + process.burst))
+        current_time += process.burst
+    return gantt_chart, processes
+# Function to Draw Gantt Chart
+def draw_gantt_chart(gantt_chart):
+    fig, ax = plt.subplots(figsize=(10, 2))
+    for task in gantt_chart:
+        pid, start, end = task
+        ax.broken_barh([(start, end - start)], (10, 5), facecolors='blue')
+        ax.text((start + end) / 2, 12, f'P{pid}', ha='center', va='center', color='white', fontsize=10)
+    ax.set_xlim(0, max(end for _, _, end in gantt_chart) + 1)
+    ax.set_xlabel("Time")
+ax.set_yticks([])
+    ax.set_title("Gantt Chart - FCFS Scheduling")
+    plt.show()
+# Function to Print Process Details
+def print_process_table(processes):
+    print("\nProcess\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time\tCompletion Time")
+    for p in processes:   print(f"P{p.pid}\t{p.arrival}\t\t{p.burst}\t\t{p.waiting_time}\t\t{p.turnaround_time}\t\t{p.completion_time}")
+# Example Usage
+process_list = [Process(1, 0, 5), Process(2, 2, 3), Process(3, 4, 2)]
+gantt_chart, scheduled_processes = fcfs_scheduling(process_list)
+print_process_table(scheduled_processes)draw_gantt_chart(gantt_chart)
